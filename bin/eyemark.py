@@ -1,6 +1,6 @@
 """
 Author: Karun Kannan
-Last Update: 12/21/17
+Last Update: 12/24/17
 """
 
 import cv2
@@ -16,6 +16,8 @@ points = []
 def get_val(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDBLCLK:
         points.append((x,y))
+        cv2.circle(us_img, (x,y), 10, (0,255,0))
+        cv2.imshow("Image Displayer", us_img)
 
 #calculate distance between two points
 def distance(pt1, pt2):
@@ -24,6 +26,23 @@ def distance(pt1, pt2):
     x = np.power((x1-x1), 2)
     y = np.power((y1-y2), 2)
     return np.sqrt(x + y)
+
+#find center and point to draw line too
+def calc_center(pt1, pt2):
+    x1, y1 = pt1
+    x2, y2 = pt2
+    #calc the center
+    c_x = (x2 + x1)/2
+    c_y = (y2 + y1)/2
+    #calc perp point, defined as v
+    mag = distance((c_x, c_y), pt2)
+    v_x = (y2 - c_y)/mag
+    v_y = (c_x - x2)/mag
+    v_x = c_x + 10*v_x
+    v_y = c_y + 10*v_y
+    v = (int(v_x), int(v_y))
+    c_val = (int(c_x), int(c_y))
+    return c_val, v
 
 while(1):
     #get directory information
@@ -43,7 +62,7 @@ while(1):
     plt.close()
 
     #open up designated window display
-    cv2.namedWindow("Image Displayer")
+    cv2.namedWindow("Image Displayer", cv2.WINDOW_KEEPRATIO)
     cv2.setMouseCallback("Image Displayer", get_val)
 
     #loop and process
@@ -55,16 +74,24 @@ while(1):
         k = cv2.waitKey(0) & 0xFF
         if k == 27:
             dist = np.float32(input("What is the control distance?:"))
-            normalize = np.divide(dist, distance(points[0], points[1]))
+            normalize = np.divide(np.float32(dist),
+                    np.float32(distance(points[0], points[1])))
 
             #draw AA line
             cv2.line(us_img, points[2], points[3], (255,0,0), 5)
             #compute AA line length
-            AA = distance(points[2], points[3])*normalize
-            print("AA distance is %d mm" % AA)
+            AA = np.float32(distance(points[2], points[3]))*normalize
+            print("AA distance is %.2f mm" % AA)
+
+            #draw central line
+            #TODO: Deal with cutoff images, idea: slide center point once drawn
+            c, new_point = calc_center(points[2], points[3])
+            cv2.line(us_img, c, new_point, (255,0,0), 5)
+
+            
 
             #show image
-            cv.imshow(i, us_img)
+            cv2.imshow(i, us_img)
             #clear points for next
             #TODO: Allow users to restart image
             points = []
