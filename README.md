@@ -1,4 +1,9 @@
 # EyeMark
-Simplify measurements for ultrasound images
+Simplify measurements for ultrasound images.
 
-Current Status: Just beginning development, master branch will not change much.
+## Installation
+1. Clone the repo
+2. Run 'pip3 install -r req.txt' to ensure that you have all the needed
+   libararies.
+3. Import the image folder into the directory
+4. Run 'python3 bin/eyemark.py'
