@@ -23,7 +23,7 @@ def get_val(event, x, y, flags, param):
 def distance(pt1, pt2):
     x1, y1 = pt1
     x2, y2 = pt2
-    x = np.power((x1-x1), 2)
+    x = np.power((x1-x2), 2)
     y = np.power((y1-y2), 2)
     return np.sqrt(x + y)
 
@@ -38,8 +38,8 @@ def calc_center(pt1, pt2):
     mag = distance((c_x, c_y), pt2)
     v_x = (y2 - c_y)/mag
     v_y = (c_x - x2)/mag
-    v_x = c_x + 10*v_x
-    v_y = c_y + 10*v_y
+    v_x = c_x + 100*v_x
+    v_y = c_y + 100*v_y
     v = (int(v_x), int(v_y))
     c_val = (int(c_x), int(c_y))
     return c_val, v
@@ -78,17 +78,21 @@ while(1):
                     np.float32(distance(points[0], points[1])))
 
             #draw AA line
-            cv2.line(us_img, points[2], points[3], (255,0,0), 5)
+            cv2.line(us_img, points[2], points[3], (255,0,0), 1)
             #compute AA line length
             AA = np.float32(distance(points[2], points[3]))*normalize
             print("AA distance is %.2f mm" % AA)
 
             #draw central line
             #TODO: Deal with cutoff images, idea: slide center point once drawn
-            c, new_point = calc_center(points[2], points[3])
-            cv2.line(us_img, c, new_point, (255,0,0), 5)
+            c, perp_point = calc_center(points[2], points[3])
+            cv2.line(us_img, c, perp_point, (255,0,0), 1)
 
-            
+            #draw inner ellipse
+            vertical_radius = int(distance(c, points[4]))
+            horizontal_radius = int(distance(points[3], points[2])/2)
+            cv2.ellipse(us_img, c, (horizontal_radius, vertical_radius), 0, 180
+                    ,360, (255,0,0), 1)
 
             #show image
             cv2.imshow(i, us_img)
