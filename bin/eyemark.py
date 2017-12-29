@@ -36,13 +36,26 @@ def calc_center(pt1, pt2):
     c_y = (y2 + y1)/2
     #calc perp point, defined as v
     mag = distance((c_x, c_y), pt2)
+    multiplier = distance((c_x, c_y), points[5])
     v_x = (y2 - c_y)/mag
     v_y = (c_x - x2)/mag
-    v_x = c_x + 100*v_x
-    v_y = c_y + 100*v_y
+    v_x = c_x + multiplier*v_x
+    v_y = c_y + multiplier*v_y
     v = (int(v_x), int(v_y))
     c_val = (int(c_x), int(c_y))
     return c_val, v
+
+#find angle between center and AA-line
+def calc_angle(pt1, pt2):
+    #pt1 is center, pt2 is points[3]
+    c_x, c_y = pt1
+    x, y = pt2
+    h = distance(pt1, pt2)
+    a = distance(pt1, (x, c_y))
+    alpha = np.cos(a/h)
+    print(alpha)
+    print(180*alpha/np.pi)
+    return alpha
 
 while(1):
     #get directory information
@@ -53,11 +66,8 @@ while(1):
     img_dir = img_dir + "/*"
 
     #gather files
-    #try:
     img = glob.glob(img_dir)
-    #except IOError:
-    #    print("Invalid image folder, try again.")
-    #    continue
+
     plt.show()
     plt.close()
 
@@ -71,6 +81,13 @@ while(1):
         cv2.imshow("Image Displayer", us_img)
 
         #only breaks out of wait sequence once esc key is clicked
+        '''
+        Points array values:
+        0, 1: scale points: give relation between pixels and mm
+        2, 3: AA line, the horizontal line at bottom
+        4: Inner radius
+        5: Outer radius
+        '''
         k = cv2.waitKey(0) & 0xFF
         if k == 27:
             dist = np.float32(input("What is the control distance?:"))
@@ -88,10 +105,13 @@ while(1):
             c, perp_point = calc_center(points[2], points[3])
             cv2.line(us_img, c, perp_point, (255,0,0), 1)
 
+            #calculate angle between center and edge points
+            alpha = -1*calc_angle(c, points[3])
+
             #draw inner ellipse
-            vertical_radius = int(distance(c, points[4]))
-            horizontal_radius = int(distance(points[3], points[2])/2)
-            cv2.ellipse(us_img, c, (horizontal_radius, vertical_radius), 0, 180
+            inner_radius = int(distance(c, points[4]))
+            horizontal_radius = int(distance(c, points[2]))
+            cv2.ellipse(us_img, c, (horizontal_radius, inner_radius), alpha, 180
                     ,360, (255,0,0), 1)
 
             #show image
