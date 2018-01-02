@@ -116,6 +116,11 @@ while(1):
             cv2.ellipse(us_img, c, (horizontal_radius, inner_radius), alpha, 180
                     ,360, (255,0,0), 1)
 
+            #draw outer ellipse
+            outer_radius = int(distance(c, points[5]))
+            cv2.ellipse(us_img, c, (horizontal_radius, outer_radius), alpha, 180
+                    ,360, (0,255,0), 1)
+
             #show image
             cv2.imshow(i, us_img)
             #clear points for next
