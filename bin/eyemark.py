@@ -52,10 +52,12 @@ def calc_angle(pt1, pt2):
     x, y = pt2
     h = distance(pt1, pt2)
     a = distance(pt1, (x, c_y))
-    alpha = np.cos(a/h)
-    print(alpha)
-    print(180*alpha/np.pi)
-    return alpha
+    alpha = np.arccos(a/h)
+    alpha = 180*alpha/np.pi
+    if c_y > y:
+        return -1*alpha
+    else:
+        return alpha
 
 while(1):
     #get directory information
@@ -106,7 +108,7 @@ while(1):
             cv2.line(us_img, c, perp_point, (255,0,0), 1)
 
             #calculate angle between center and edge points
-            alpha = -1*calc_angle(c, points[3])
+            alpha = calc_angle(c, points[3])
 
             #draw inner ellipse
             inner_radius = int(distance(c, points[4]))
