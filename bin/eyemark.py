@@ -76,7 +76,7 @@ while(1):
     #open up designated window display
     cv2.namedWindow("Image Displayer", cv2.WINDOW_KEEPRATIO)
     cv2.setMouseCallback("Image Displayer", get_val)
-
+    thickness_dict = {}
     #loop and process
     for i in img:
         us_img = cv2.imread(i)
@@ -123,18 +123,15 @@ while(1):
 
             #get the points
             inner_points = cv2.ellipse2Poly(c, (inner_radius, horizontal_radius)
-                    ,int(alpha), 90, 270, 10)
+                    ,int(alpha), 165, 195, 1)
             outer_points = cv2.ellipse2Poly(c, (outer_radius, horizontal_radius)
-                    ,int(alpha), 90, 270, 10)
-            print(inner_points[0][0])
+                    ,int(alpha), 165, 195, 1)
+            thickness = []
             for j in range(len(inner_points)):
-                us_img.itemset((inner_points[j][0], inner_points[j][1], 0), 0)
-                us_img.itemset((inner_points[j][0], inner_points[j][1], 1), 255)
-                us_img.itemset((inner_points[j][0], inner_points[j][1], 2), 0)
-                us_img.itemset((outer_points[j][0], outer_points[j][1], 0), 0)
-                us_img.itemset((outer_points[j][0], outer_points[j][1], 1), 255)
-                us_img.itemset((outer_points[j][0], outer_points[j][1], 2), 0)
-
+                thickness_j = distance((inner_points[j][0], inner_points[j][1]),
+                        (outer_points[j][0], outer_points[j][1]))
+                thickness.append(thickness_j*normalize)
+            thickness_dict[i] = thickness
             #show image
             cv2.imshow(i, us_img)
             #clear points for next
