@@ -116,11 +116,16 @@ while(1):
             cv2.ellipse(us_img, c, (horizontal_radius, inner_radius), alpha, 180
                     ,360, (255,0,0), 1)
 
+            cv2.ellipse(us_img, c, (horizontal_radius, inner_radius), alpha, 255
+                    ,295, (0,255,0), 1)
+
             #draw outer ellipse
             outer_radius = int(distance(c, points[5]))
             cv2.ellipse(us_img, c, (horizontal_radius, outer_radius), alpha, 180
                     ,360, (255,0,0), 1)
 
+            cv2.ellipse(us_img, c, (horizontal_radius, outer_radius), alpha, 255
+                    ,295, (0,255,0), 1)
             #get the points
             inner_points = cv2.ellipse2Poly(c, (inner_radius, horizontal_radius)
                     ,int(alpha), 165, 195, 1)
@@ -131,6 +136,7 @@ while(1):
                 thickness_j = distance((inner_points[j][0], inner_points[j][1]),
                         (outer_points[j][0], outer_points[j][1]))
                 thickness.append(thickness_j*normalize)
+            print(i, thickness[15])
             thickness_dict[i] = thickness
             #show image
             cv2.imshow(i, us_img)
