@@ -119,7 +119,21 @@ while(1):
             #draw outer ellipse
             outer_radius = int(distance(c, points[5]))
             cv2.ellipse(us_img, c, (horizontal_radius, outer_radius), alpha, 180
-                    ,360, (0,255,0), 1)
+                    ,360, (255,0,0), 1)
+
+            #get the points
+            inner_points = cv2.ellipse2Poly(c, (inner_radius, horizontal_radius)
+                    ,int(alpha), 90, 270, 10)
+            outer_points = cv2.ellipse2Poly(c, (outer_radius, horizontal_radius)
+                    ,int(alpha), 90, 270, 10)
+            print(inner_points[0][0])
+            for j in range(len(inner_points)):
+                us_img.itemset((inner_points[j][0], inner_points[j][1], 0), 0)
+                us_img.itemset((inner_points[j][0], inner_points[j][1], 1), 255)
+                us_img.itemset((inner_points[j][0], inner_points[j][1], 2), 0)
+                us_img.itemset((outer_points[j][0], outer_points[j][1], 0), 0)
+                us_img.itemset((outer_points[j][0], outer_points[j][1], 1), 255)
+                us_img.itemset((outer_points[j][0], outer_points[j][1], 2), 0)
 
             #show image
             cv2.imshow(i, us_img)
