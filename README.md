@@ -7,3 +7,11 @@ Simplify measurements for ultrasound images.
    libraries.
 3. Import the image folder into the directory
 4. Run `python3 bin/eyemark.py`
+
+## TODO:
+- [ ] Have data expert try out current system
+- [ ] Determine if error (~8%) is acceptable
+- [ ] Allow for adjustments of calculated points
+
+## Note
+Data in test files will not be provided.
