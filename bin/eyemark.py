@@ -1,12 +1,12 @@
 """
 Author: Karun Kannan
-Last Update: 12/24/17
+Last Update: 1/3/18
 """
 
 import cv2
 import numpy as np
 import glob
-import time
+import pickle
 from matplotlib import pyplot as plt
 
 points = []
@@ -145,3 +145,6 @@ while(1):
             points = []
             continue
 
+file_name = open('test/thickness.pkle', 'wb')
+pickle.dump(thickness_dict, file_name)
+file_name.close()
