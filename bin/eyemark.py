@@ -87,8 +87,9 @@ while(1):
         Points array values:
         0, 1: scale points: give relation between pixels and mm
         2, 3: AA line, the horizontal line at bottom
-        4: Inner radius
-        5: Outer radius
+        4: Inner vertical radius
+        5: Outer vertical radius
+        6: Outer base radius
         '''
         k = cv2.waitKey(0) & 0xFF
         if k == 27:
@@ -131,13 +132,27 @@ while(1):
                     ,int(alpha), 165, 195, 1)
             outer_points = cv2.ellipse2Poly(c, (outer_radius, horizontal_radius)
                     ,int(alpha), 165, 195, 1)
+
             thickness = []
             for j in range(len(inner_points)):
                 thickness_j = distance((inner_points[j][0], inner_points[j][1]),
                         (outer_points[j][0], outer_points[j][1]))
                 thickness.append(thickness_j*normalize)
-            print(i, thickness[15])
+            print("Thickness of %s: %.2f mm" % (i, thickness[15]))
             thickness_dict[i] = thickness
+
+            #draw in 3mmT points:
+
+            #ACRC
+            x1, y1 = perp_point #from the calc center
+            x2, y2 = points[6]
+            x_c = x1
+            y_c = int(((x2 - x1)**2 + y2**2 - y1**2)/(2*(y2 - y1)))
+            radius = int(distance(points[6], (x_c,y_c)))
+            cv2.circle(us_img, (x_c, y_c), radius, (0,0,255))
+            print("ACRC radius: %.2f" % radius)
+
+
             #show image
             cv2.imshow(i, us_img)
             #clear points for next
