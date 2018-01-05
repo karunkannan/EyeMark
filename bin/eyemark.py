@@ -138,7 +138,7 @@ while(1):
                 thickness_j = distance((inner_points[j][0], inner_points[j][1]),
                         (outer_points[j][0], outer_points[j][1]))
                 thickness.append(thickness_j*normalize)
-            print("Thickness of %s: %.2f mm" % (i, thickness[15]))
+            print("Thickness: %.2f mm" % (thickness[15]))
             thickness_dict[i] = thickness
 
             #draw in 3mmT points:
@@ -150,7 +150,18 @@ while(1):
             y_c = int(((x2 - x1)**2 + y2**2 - y1**2)/(2*(y2 - y1)))
             radius = int(distance(points[6], (x_c,y_c)))
             cv2.circle(us_img, (x_c, y_c), radius, (0,0,255))
-            print("ACRC radius: %.2f" % radius)
+            print("ACRC radius: %.2f mm" % radius)
+
+            #PCRC
+            x1, y1 = perp_point
+            diff = int(outer_radius - inner_radius)
+            y1 += diff
+            x2, y2 = points[2]
+            x_c = x1
+            y_c = int(((x2 - x1)**2 + y2**2 - y1**2)/(2*(y2 - y1)))
+            radius = int(distance(points[2], (x_c, y_c)))
+            cv2.circle(us_img, (x_c, y_c), radius, (0,0,255))
+            print("PCRC Radius: %.2f mm" % radius)
 
 
             #show image
