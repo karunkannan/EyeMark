@@ -12,6 +12,7 @@ Simplify measurements for ultrasound images.
 - [ ] Have data expert try out current system
 - [ ] Determine if error (~8%) is acceptable
 - [ ] Allow for adjustments of calculated points
+- [ ] Add 3mmT measurement
 
 ## Note
 Data in test files will not be provided.

@@ -1,12 +1,12 @@
 """
 Author: Karun Kannan
-Last Update: 12/24/17
+Last Update: 1/3/18
 """
 
 import cv2
 import numpy as np
 import glob
-import time
+import pickle
 from matplotlib import pyplot as plt
 
 points = []
@@ -87,8 +87,9 @@ while(1):
         Points array values:
         0, 1: scale points: give relation between pixels and mm
         2, 3: AA line, the horizontal line at bottom
-        4: Inner radius
-        5: Outer radius
+        4: Inner vertical radius
+        5: Outer vertical radius
+        6: Outer base radius
         '''
         k = cv2.waitKey(0) & 0xFF
         if k == 27:
@@ -116,22 +117,53 @@ while(1):
             cv2.ellipse(us_img, c, (horizontal_radius, inner_radius), alpha, 180
                     ,360, (255,0,0), 1)
 
+            cv2.ellipse(us_img, c, (horizontal_radius, inner_radius), alpha, 255
+                    ,295, (0,255,0), 1)
+
             #draw outer ellipse
             outer_radius = int(distance(c, points[5]))
             cv2.ellipse(us_img, c, (horizontal_radius, outer_radius), alpha, 180
                     ,360, (255,0,0), 1)
 
+            cv2.ellipse(us_img, c, (horizontal_radius, outer_radius), alpha, 255
+                    ,295, (0,255,0), 1)
             #get the points
             inner_points = cv2.ellipse2Poly(c, (inner_radius, horizontal_radius)
                     ,int(alpha), 165, 195, 1)
             outer_points = cv2.ellipse2Poly(c, (outer_radius, horizontal_radius)
                     ,int(alpha), 165, 195, 1)
+
             thickness = []
             for j in range(len(inner_points)):
                 thickness_j = distance((inner_points[j][0], inner_points[j][1]),
                         (outer_points[j][0], outer_points[j][1]))
                 thickness.append(thickness_j*normalize)
+            print("Thickness: %.2f mm" % (thickness[15]))
             thickness_dict[i] = thickness
+
+            #draw in 3mmT points:
+
+            #ACRC
+            x1, y1 = perp_point #from the calc center
+            x2, y2 = points[6]
+            x_c = x1
+            y_c = int(((x2 - x1)**2 + y2**2 - y1**2)/(2*(y2 - y1)))
+            radius = int(distance(points[6], (x_c,y_c)))
+            cv2.circle(us_img, (x_c, y_c), radius, (0,0,255))
+            print("ACRC radius: %.2f mm" % radius)
+
+            #PCRC
+            x1, y1 = perp_point
+            diff = int(outer_radius - inner_radius)
+            y1 += diff
+            x2, y2 = points[2]
+            x_c = x1
+            y_c = int(((x2 - x1)**2 + y2**2 - y1**2)/(2*(y2 - y1)))
+            radius = int(distance(points[2], (x_c, y_c)))
+            cv2.circle(us_img, (x_c, y_c), radius, (0,0,255))
+            print("PCRC Radius: %.2f mm" % radius)
+
+
             #show image
             cv2.imshow(i, us_img)
             #clear points for next
@@ -139,3 +171,6 @@ while(1):
             points = []
             continue
 
+file_name = open('test/thickness.pkle', 'wb')
+pickle.dump(thickness_dict, file_name)
+file_name.close()
