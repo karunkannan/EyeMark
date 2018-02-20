@@ -150,7 +150,8 @@ while(1):
             y_c = int(((x2 - x1)**2 + y2**2 - y1**2)/(2*(y2 - y1)))
             radius = int(distance(points[6], (x_c,y_c)))
             cv2.circle(us_img, (x_c, y_c), radius, (0,0,255))
-            print("ACRC radius: %.2f mm" % radius)
+            r_norm = radius*normalize
+            print("ACRC radius: %.2f mm" % r_norm)
 
             #PCRC
             x1, y1 = perp_point
@@ -161,7 +162,8 @@ while(1):
             y_c = int(((x2 - x1)**2 + y2**2 - y1**2)/(2*(y2 - y1)))
             radius = int(distance(points[2], (x_c, y_c)))
             cv2.circle(us_img, (x_c, y_c), radius, (0,0,255))
-            print("PCRC Radius: %.2f mm" % radius)
+            r_norm = radius*normalize
+            print("PCRC Radius: %.2f mm" % r_norm)
 
 
             #show image
