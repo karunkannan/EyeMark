@@ -154,8 +154,8 @@ def select_and_compute(fname):
                 x2, y2 = points[6]
                 x_c = x1
                 y_c = int(((x2 - x1)**2 + y2**2 - y1**2)/(2*(y2 - y1)))
-                radius = int(_distance(points[6], (x_c,y_c)))
-                cv2.circle(img, (x_c, y_c), radius, (0,0,255))
+                radius = (_distance(points[6], (x_c,y_c)))
+                cv2.circle(img, (x_c, y_c), int(radius), (0,0,255))
                 r_norm = radius*normalize
                 ACRC = r_norm
                 print("ACRC radius: %.2f mm" % r_norm)
@@ -167,11 +167,16 @@ def select_and_compute(fname):
                 x2, y2 = points[2]
                 x_c = x1
                 y_c = int(((x2 - x1)**2 + y2**2 - y1**2)/(2*(y2 - y1)))
-                radius = int(_distance(points[2], (x_c, y_c)))
-                cv2.circle(img, (x_c, y_c), radius, (0,0,255))
+                radius = (_distance(points[2], (x_c, y_c)))
+                cv2.circle(img, (x_c, y_c), int(radius), (0,0,255))
                 r_norm = radius*normalize
                 PCRC = r_norm
                 print("PCRC Radius: %.2f mm" % r_norm)
+
+                ##Depth of AC
+                depth_of_AC = _distance(c, (x_c, y_c))
+                depth_of_AC = depth_of_AC*normalize
+                print("Depth of AC: %.2f mm" % depth_of_AC)
 
 
                 #show image
