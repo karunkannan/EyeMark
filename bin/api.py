@@ -184,6 +184,10 @@ def select_and_compute(fname):
         elif k == ord('d'):
             img = img_copy
             points = points[1:len(points)]
+        elif k == ord('r'):
+            points = []
+            img = cv2.imread(fname)
+            img_copy = img.copy()
 
 
 
