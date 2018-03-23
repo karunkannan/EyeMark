@@ -1,6 +1,6 @@
 """
 Author: Karun Kannan
-Last Update: 1/3/18
+Last Update: 3/23/18
 """
 
 import cv2
@@ -22,7 +22,7 @@ def _get_val(event, x, y, flags, param):
         cv2.circle(img, (x,y), 5, (0,255,0))
         cv2.putText(img, str(len(points) - 1), (x,y),
                 cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 2)
-        cv2.imshow("Image Displayer", img)
+        #cv2.imshow("Image Displayer", img)
 
 ''' Calculates distance b/w two points
     Param: Two points of form (x,y)
@@ -46,8 +46,8 @@ def _calc_center(pt1, pt2):
     c_x = (x2 + x1)/2
     c_y = (y2 + y1)/2
     #calc perp point, defined as v
-    mag = distance((c_x, c_y), pt2)
-    multiplier = distance((c_x, c_y), points[5])
+    mag = _distance((c_x, c_y), pt2)
+    multiplier = _distance((c_x, c_y), points[5])
     v_x = (y2 - c_y)/mag
     v_y = (c_x - x2)/mag
     v_x = c_x + multiplier*v_x
@@ -63,8 +63,8 @@ def _calc_center(pt1, pt2):
 def _calc_angle(pt1, pt2):
     c_x, c_y = pt1
     x, y = pt2
-    h = distance(pt1, pt2)
-    a = distance(pt1, (x, c_y))
+    h = _distance(pt1, pt2)
+    a = _distance(pt1, (x, c_y))
     alpha = np.arccos(a/h)
     alpha = 180*alpha/np.pi
     if c_y > y:
@@ -97,6 +97,7 @@ def select_and_compute(fname):
         '''
         k = cv2.waitKey(1) & 0xFF
         if k == ord('q'):
+            cv2.destroyAllWindows()
             if len(points) == 7:
                 dist = np.float32(input('What is the control distance of this image?'))
                 normalize = np.divide(np.float32(dist),
@@ -174,11 +175,15 @@ def select_and_compute(fname):
 
 
                 #show image
-                cv2.imshow(i, img)
+                cv2.imshow("Processed", img)
                 points = []
                 return True, AA, max_thickness, ACRC, PCRC
             else:
                 #insufficient points
                 return False, None, None, None, None
+        elif k == ord('d'):
+            img = img_copy
+            points = points[1:len(points)]
+
 
 
