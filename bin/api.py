@@ -208,10 +208,10 @@ def select_and_compute(fname):
                 #show image
                 cv2.imshow("Processed", img)
                 points = []
-                return True, AA, max_thickness, ACRC, PCRC
+                return True, float(AA), float(max_thickness), float(ACRC), float(PCRC), float(depth_of_AC)
             else:
                 #insufficient points
-                return False, None, None, None, None
+                return False, None, None, None, None, None
         elif k == ord('d'):
             img = img_copy
             points = points[1:len(points)]
