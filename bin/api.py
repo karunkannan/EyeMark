@@ -132,7 +132,7 @@ def select_and_compute(fname):
         if k == ord('q'):
             cv2.destroyAllWindows()
             if len(points) == 8:
-                dist = np.float32(input('What is the control distance of this image?'))
+                dist = np.float32(input('What is the control distance of this image?: '))
                 normalize = np.divide(np.float32(dist),
                     np.float32(_distance(points[0], points[1])))
 
@@ -185,7 +185,6 @@ def select_and_compute(fname):
                 #ACRC
                 center_point_ACRC, radius_ACRC = _calc_center_of_circle(
                         points[6], points[7], points[5])
-                print(center_point_ACRC, radius_ACRC)
                 cv2.circle(img, center_point_ACRC, int(radius_ACRC), (0,0,255))
                 r_norm = radius_ACRC*normalize
                 ACRC = r_norm
@@ -211,6 +210,7 @@ def select_and_compute(fname):
                 return True, float(AA), float(max_thickness), float(ACRC), float(PCRC), float(depth_of_AC)
             else:
                 #insufficient points
+                points = []
                 return False, None, None, None, None, None
         elif k == ord('d'):
             img = img_copy
