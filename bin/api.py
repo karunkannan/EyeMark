@@ -219,6 +219,8 @@ def select_and_compute(fname):
             points = []
             img = cv2.imread(fname)
             img_copy = img.copy()
+        elif k == ord('e'):
+            return True, None, None, None, None, None
 
 
 

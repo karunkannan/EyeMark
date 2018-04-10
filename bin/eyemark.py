@@ -54,6 +54,8 @@ while(1):
         while not valid:
             fname = img[i]
             valid, AA, max_thickness, ACRC, PCRC, depth = select_and_compute(fname)
+        if valid and AA == None:
+            continue
         #check for flagging
         flag = ""
         if(abnormality_check(AA, AA_typ, thresh)):
