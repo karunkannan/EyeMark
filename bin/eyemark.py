@@ -55,16 +55,21 @@ while(1):
             fname = img[i]
             valid, AA, max_thickness, ACRC, PCRC, depth = select_and_compute(fname)
         #check for flagging
-        counter = 0
-        counter += abnormality_check(AA, AA_typ, thresh)
-        counter += abnormality_check(max_thickness, max_thickness_typ, thresh)
-        counter += abnormality_check(ACRC, ACRC_typ, thresh)
-        counter += abnormality_check(PCRC, PCRC_typ, thresh)
-        counter += abnormality_check(depth, depth_typ, thresh)
-        if counter > 3:
-            flag = "Flagged"
-        else:
-            flag = ""
+        flag = ""
+        if(abnormality_check(AA, AA_typ, thresh)):
+            flag += "AA, "
+
+        if(abnormality_check(max_thickness, max_thickness_typ, thresh)):
+            flag += "thickness, "
+
+        if(abnormality_check(ACRC, ACRC_typ, thresh)):
+            flag += "ACRC, "
+
+        if(abnormality_check(PCRC, PCRC_typ, thresh)):
+            flag += "PCRC, "
+        if(abnormality_check(depth, depth_typ, thresh)):
+            flag += "depth"
+
         sheet.write(i+1, 0, fname)
         sheet.write(i+1, 1, AA)
         sheet.write(i+1, 2, max_thickness)
@@ -72,6 +77,10 @@ while(1):
         sheet.write(i+1, 4, PCRC)
         sheet.write(i+1, 5, depth)
         sheet.write(i+1, 6, flag)
+        book.save("Results.xls")
+
+        plt.show()
+        plt.close()
 
 book.save("Results.xls")
 
