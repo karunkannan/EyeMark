@@ -199,7 +199,7 @@ def select_and_compute(fname):
                 print("PCRC Radius: %.2f mm" % r_norm)
 
                 ##Depth of AC
-                depth_of_AC = _distance(c, center_point_PCRC)
+                depth_of_AC = _distance(c, points[4])
                 depth_of_AC = depth_of_AC*normalize
                 print("Depth of AC: %.2f mm" % depth_of_AC)
 
