@@ -69,6 +69,7 @@ while(1):
 
         if(abnormality_check(PCRC, PCRC_typ, thresh)):
             flag += "PCRC, "
+
         if(abnormality_check(depth, depth_typ, thresh)):
             flag += "depth"
 
