@@ -1,18 +1,31 @@
 # EyeMark
 Simplify measurements for ultrasound images.
 
-## Installation
-1. Clone the repo
-2. Run `pip3 install -r req.txt` to ensure that you have all the needed
+## Windows Installation
+1. Install python executable installer via
+   [website](https://www.python.org/downloads/release/python-365/), ensure it is the executable
+   intstaller.
+2. Follow installer, check option to `Add Python 3.6 to Path`.
+3. Disable the PATH length
+4. Download the release
+5. Open a command terminal and navigate to the EyeMark directory using the cd
+   command.
+6. Once there, run `pip3 install -r req.txt` to ensure that you have all the needed
    libraries.
-3. Import the image folder into the directory
-4. Run `python3 bin/eyemark.py`
+7. Import the image folder into the directory
+8. Run `python bin/eyemark.py`
 
-## TODO:
-- [ ] Have data expert try out current system
-- [ ] Determine if error (~8%) is acceptable
-- [ ] Allow for adjustments of calculated points
-- [ ] Add 3mmT measurement
+## Mac Install
+1. Download the release
+2. Open a command terminal and navigate to the EyeMark directory using the cd
+   command.
+3. Once there, run `pip3 install -r req.txt` to ensure that you have all the needed
+   libraries.
+4. Import the image folder into the directory
+5. Run `python bin/eyemark.py`
+
+If your mac does not have python, run the executable found on the python
+website.
 
 ## Note
 Data in test files will not be provided.
