@@ -33,6 +33,7 @@ ACRC_typ = float(input("Typical radius of ACRC (mm): "))
 PCRC_typ = float(input("Typical radius of PCRC (mm): "))
 depth_typ = float(input("Typical depth of Anterior Chamber (mm): "))
 thresh = float(input("Threshold for flagging (decimal value): "))
+print("Instructions:\nDouble Click to select points as specified on wiki.\nq - complete selection for given image.\nd - deletes the last selected point. \nr - resets all points for given image.\ne - exits the current image.")
 
 while(1):
     #get directory information
