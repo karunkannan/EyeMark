@@ -5,23 +5,31 @@ Last Update: 3/23/18
 
 import cv2
 import numpy as np
+import time
 import glob
 import pickle
 from matplotlib import pyplot as plt
 
+DBLCLK = 4;
+
 points = []
 img = None
 img_copy = None
+last_click_timestamp = None
 
 ''' Allows opencv to select points '''
 def _get_val(event, x, y, flags, param):
-    global points, img, img_copy
-    if event == cv2.EVENT_LBUTTONDBLCLK:
-        img_copy = img.copy()
-        points.append((x,y))
-        cv2.circle(img, (x,y), 5, (0,255,0))
-        cv2.putText(img, str(len(points) - 1), (x,y),
+    global points, img, img_copy, last_click_timestamp
+    if event == cv2.EVENT_LBUTTONDOWN:
+        if last_click_timestamp is not None and time.time() - last_click_timestamp < 0.5:
+            img_copy = img.copy()
+            points.append((x,y))
+            cv2.circle(img, (x,y), 5, (0,255,0))
+            cv2.putText(img, str(len(points) - 1), (x,y),
                 cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 2)
+            last_click_timestamp = None
+        else:
+            last_click_timestamp = time.time()
         #cv2.imshow("Image Displayer", img)
 
 ''' Calculates distance b/w two points
